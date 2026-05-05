@@ -4,9 +4,12 @@ dist/
 .env
 *.env
 
-# Firebase
+# Firebase Service Account - NEVER COMMIT THIS!
+server/*firebase-adminsdk*.json
 serviceAccountKey.json
 **/serviceAccountKey.json
+*serviceAccountKey*
+*.json.key
 
 # Angular
 client/dist/
