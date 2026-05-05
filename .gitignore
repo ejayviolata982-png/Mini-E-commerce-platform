@@ -1,0 +1,23 @@
+# Node
+node_modules/
+dist/
+.env
+*.env
+
+# Firebase
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# Angular
+client/dist/
+client/.angular/
+
+# Uploads
+server/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
