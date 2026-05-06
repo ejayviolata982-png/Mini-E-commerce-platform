@@ -2,6 +2,10 @@ import admin from 'firebase-admin';
 import dotenv from 'dotenv';
 dotenv.config();
 
+console.log('PROJECT_ID:', process.env.FIREBASE_PROJECT_ID);
+console.log('CLIENT_EMAIL:', process.env.FIREBASE_CLIENT_EMAIL);
+console.log('PRIVATE_KEY exists:', !!process.env.FIREBASE_PRIVATE_KEY);
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
