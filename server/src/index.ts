@@ -238,6 +238,9 @@ const swaggerDocument = {
   }
 };
 
+// Swagger Docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Routes
 app.get('/', (req, res) => {
   res.json({ message: '🛍️ Mini E-Commerce API is running!' });
