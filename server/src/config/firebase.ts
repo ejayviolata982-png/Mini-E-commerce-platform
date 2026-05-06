@@ -1,5 +1,4 @@
 import admin from 'firebase-admin';
-import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -7,12 +6,11 @@ const serviceAccount = require('../../serviceAccountKey.json');
 
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+    credential: admin.credential.cert(serviceAccount)
   });
 }
 
 export const db = admin.firestore();
 export const auth = admin.auth();
-export const storage = admin.storage();
+export const storage = admin.storage; // keep reference but won't initialize bucket
 export default admin;

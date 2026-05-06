@@ -69,12 +69,14 @@ export const getMyOrders = async (
   try {
     const snapshot = await db.collection('orders')
       .where('userId', '==', uid)
-      .orderBy('createdAt', 'desc')
       .get();
-    const orders = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+
+    const orders = snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .sort((a: any, b: any) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
     res.json(orders);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -87,14 +89,19 @@ export const getAllOrders = async (
 ): Promise<void> => {
   const { status, search } = req.query;
   try {
-    let query: any = db.collection('orders').orderBy('createdAt', 'desc');
-    if (status) query = query.where('status', '==', status);
+    let snapshot: any;
 
-    const snapshot = await query.get();
-    let orders = snapshot.docs.map((doc: any) => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    if (status) {
+      snapshot = await db.collection('orders').where('status', '==', status).get();
+    } else {
+      snapshot = await db.collection('orders').get();
+    }
+
+    let orders = snapshot.docs
+      .map((doc: any) => ({ id: doc.id, ...doc.data() }))
+      .sort((a: any, b: any) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
 
     if (search) {
       const s = (search as string).toLowerCase();
@@ -177,6 +184,66 @@ export const getDashboardStats = async (
       },
       recentOrders,
     });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const requestCancelOrder = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const { reason } = req.body;
+  const uid = req.user?.uid;
+  try {
+    const orderDoc = await db.collection('orders').doc(id).get();
+    if (!orderDoc.exists) { res.status(404).json({ message: 'Order not found' }); return; }
+    const order = orderDoc.data() as any;
+    if (order.userId !== uid) { res.status(403).json({ message: 'Not your order' }); return; }
+    if (['cancelled', 'delivered', 'shipped'].includes(order.status)) {
+      res.status(400).json({ message: 'This order cannot be cancelled' }); return;
+    }
+    if (order.cancelRequest?.status === 'pending') {
+      res.status(400).json({ message: 'Cancel request already submitted' }); return;
+    }
+    await db.collection('orders').doc(id).update({
+      cancelRequest: {
+        status: 'pending',
+        reason: reason || 'No reason provided',
+        requestedAt: new Date().toISOString(),
+      },
+      updatedAt: new Date().toISOString(),
+    });
+    res.json({ message: 'Cancel request submitted' });
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const handleCancelRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const { action } = req.body; // 'approve' or 'reject'
+  try {
+    const orderDoc = await db.collection('orders').doc(id).get();
+    if (!orderDoc.exists) { res.status(404).json({ message: 'Order not found' }); return; }
+
+    if (action === 'approve') {
+      await db.collection('orders').doc(id).update({
+        status: 'cancelled',
+        cancelRequest: { status: 'approved', resolvedAt: new Date().toISOString() },
+        updatedAt: new Date().toISOString(),
+      });
+    } else {
+      await db.collection('orders').doc(id).update({
+        cancelRequest: { status: 'rejected', resolvedAt: new Date().toISOString() },
+        updatedAt: new Date().toISOString(),
+      });
+    }
+    res.json({ message: `Cancel request ${action}d` });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }

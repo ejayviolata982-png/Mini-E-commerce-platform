@@ -1,0 +1,141 @@
+<nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="flex justify-between items-center h-14 sm:h-16">
+
+      <!-- Logo -->
+      <button (click)="goHome()"
+              class="text-lg sm:text-xl font-bold flex items-center gap-2 text-gray-900 hover:text-orange-500 transition bg-transparent border-none cursor-pointer">
+        🛍️ Discart
+      </button>
+
+      <!-- Desktop Nav -->
+      <div class="hidden sm:flex items-center gap-4 lg:gap-6">
+        <a routerLink="/products"
+           class="text-gray-600 hover:text-orange-500 transition font-medium text-sm">
+          Products
+        </a>
+
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login"
+             class="text-gray-600 hover:text-orange-500 transition font-medium text-sm">
+            Login
+          </a>
+          <a routerLink="/register"
+             class="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600 transition text-sm shadow-sm">
+            Register
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn && !isAdmin">
+          <a routerLink="/my-orders"
+             class="text-gray-600 hover:text-orange-500 transition font-medium text-sm">
+            My Orders
+          </a>
+          <a routerLink="/cart"
+             class="relative text-gray-600 hover:text-orange-500 transition font-medium text-sm">
+            🛒 Cart
+            <span *ngIf="cartCount > 0"
+                  class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">
+              {{ cartCount }}
+            </span>
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isAdmin">
+          <a routerLink="/admin/dashboard"
+             class="text-gray-600 hover:text-orange-500 transition font-medium text-sm">
+            ⚙️ Admin
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <div class="relative">
+            <button (click)="toggleMenu($event)"
+                    class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 px-3 py-2 rounded-lg transition border border-gray-300 font-medium text-sm">
+              <span class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                {{ userName.charAt(0).toUpperCase() }}
+              </span>
+              <span class="max-w-24 truncate">{{ userName }}</span>
+              <span class="text-xs text-gray-400">▾</span>
+            </button>
+
+            <div *ngIf="menuOpen"
+                 class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-50 overflow-hidden border border-gray-200">
+              <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                <p class="text-xs text-gray-500">Signed in as</p>
+                <p class="text-sm font-bold text-gray-900 truncate">{{ userName }}</p>
+              </div>
+              <a routerLink="/profile" (click)="closeMenu()"
+                 class="flex items-center gap-2 px-4 py-3 hover:bg-orange-50 text-gray-700 font-medium text-sm border-b border-gray-100">
+                👤 Profile
+              </a>
+              <button (click)="logout()"
+                      class="w-full flex items-center gap-2 px-4 py-3 text-red-500 hover:bg-red-50 font-medium text-sm">
+                🚪 Logout
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Mobile -->
+      <div class="flex sm:hidden items-center gap-2">
+        <a *ngIf="isLoggedIn && !isAdmin" routerLink="/cart"
+           class="relative text-gray-600 p-2">
+          🛒
+          <span *ngIf="cartCount > 0"
+                class="absolute -top-0 -right-0 bg-orange-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">
+            {{ cartCount }}
+          </span>
+        </a>
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="text-gray-600 font-medium text-sm px-3 py-1.5">Login</a>
+          <a routerLink="/register" class="bg-orange-500 text-white px-3 py-1.5 rounded-lg font-semibold text-sm">Register</a>
+        </ng-container>
+        <ng-container *ngIf="isLoggedIn">
+          <button (click)="toggleMenu($event)"
+                  class="flex items-center gap-1.5 bg-gray-100 text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-300 text-sm">
+            <span class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+              {{ userName.charAt(0).toUpperCase() }}
+            </span>
+            <span class="text-xs">▾</span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown -->
+  <div *ngIf="menuOpen && isLoggedIn" class="sm:hidden border-t border-gray-200 bg-white shadow-lg">
+    <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
+      <p class="text-xs text-gray-500">Signed in as</p>
+      <p class="text-sm font-bold text-gray-900">{{ userName }}</p>
+    </div>
+    <a routerLink="/products" (click)="closeMenu()"
+       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 border-b border-gray-100 font-medium text-sm">
+      🛍️ Products
+    </a>
+    <a *ngIf="!isAdmin" routerLink="/cart" (click)="closeMenu()"
+       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 border-b border-gray-100 font-medium text-sm">
+      🛒 Cart ({{ cartCount }})
+    </a>
+    <a *ngIf="!isAdmin" routerLink="/my-orders" (click)="closeMenu()"
+       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 border-b border-gray-100 font-medium text-sm">
+      📦 My Orders
+    </a>
+    <a *ngIf="isAdmin" routerLink="/admin/dashboard" (click)="closeMenu()"
+       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 border-b border-gray-100 font-medium text-sm">
+      ⚙️ Admin Dashboard
+    </a>
+    <a routerLink="/profile" (click)="closeMenu()"
+       class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-orange-50 border-b border-gray-100 font-medium text-sm">
+      👤 Profile
+    </a>
+    <button (click)="logout()"
+            class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 font-medium text-sm">
+      🚪 Logout
+    </button>
+  </div>
+</nav>
+
+<div *ngIf="menuOpen" (click)="closeMenu()" class="fixed inset-0 z-40 bg-black bg-opacity-10"></div>
