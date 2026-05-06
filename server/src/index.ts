@@ -4,7 +4,7 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import path from 'path';
+
 
 import authRoutes from './routes/authRoutes';
 import categoryRoutes from './routes/categoryRoutes';
