@@ -14,6 +14,10 @@ import cartRoutes from './routes/cartRoutes';
 import userRoutes from './routes/userRoutes';
 import { errorHandler } from './middleware/errorHandler';
 
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import path from 'path';
+
 // Initialize Firebase
 import './config/firebase';
 
@@ -29,6 +33,10 @@ app.use(cors({
 }));
 app.use(morgan('dev'));
 app.use(express.json());
+
+// Swagger Docs
+const swaggerDocument = YAML.load(path.join(__dirname, '../swagger.yaml'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.get('/', (req, res) => {
