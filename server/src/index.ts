@@ -15,7 +15,8 @@ import userRoutes from './routes/userRoutes';
 import { errorHandler } from './middleware/errorHandler';
 
 import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
+import * as fs from 'fs';
+import * as jsyaml from 'js-yaml';
 import path from 'path';
 
 // Initialize Firebase
@@ -35,7 +36,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // Swagger Docs
-const swaggerDocument = YAML.load(path.join(__dirname, 'swagger.yaml'));
+const swaggerDocument = jsyaml.load(fs.readFileSync(path.join(__dirname, 'swagger.yaml'), 'utf8'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
