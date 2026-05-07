@@ -153,7 +153,7 @@ npm run dev
 ## 📸 Screenshots
 
 ### 👤 User View
-- ![Home Page](screenshots/User_first_screen_db.png) — Landing page with hero banner, category pills, and featured products grid
+- ![Home Page](screenshots/admin_login.png) — Landing page with hero banner, category pills, and featured products grid
 - ![All Products](screenshots/User_product_view.png) — Product listing with search bar, category filter, stock count, and Add to Cart button
 - ![Shopping Cart](screenshots/User_cart_view_db.png) — Cart with item selection, quantity controls, order summary, and total price
 - ![Checkout](screenshots/user_address_details_and_payment_method_img.png) — Shipping address form with payment method selection (COD, GCash, Bank Transfer)
