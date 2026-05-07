@@ -152,24 +152,41 @@ npm run dev
 
 ## 📸 Screenshots
 
-Home Page — Displays all available products with search and category filter
-Product Detail — Shows product info, price, stock, and Add to Cart button
-Shopping Cart — Lists selected items with quantity controls and total price
-Checkout — Form where user enters shipping address and payment method
-Order Success — Confirmation screen after successfully placing an order
-My Orders — User's order history with status tracking
-Login/Register — Authentication pages for user access
+Screenshots are stored in the `/screenshots` folder, organized by UI section and API documentation.
 
-Admin
-8. Dashboard — Overview of total sales, orders, revenue, and recent activity
-9. Manage Orders — Table of all orders with customer name, address, and status
-10. Order Details Modal — Full breakdown of items ordered, shipping address, and payment
-11. Manage Products — Admin can add, edit, and delete products
-12. Manage Categories — Admin can create and manage product categories
-13. Manage Users — List of all registered users in the system
-API & Backend
-14. Swagger UI — Interactive API documentation listing all available endpoints
-15. Swagger Endpoint — Expanded view of a single API endpoint with request and response schema
+### User View Screenshots
+- [User first screen](screenshots/User%20View%20db%20img/User%20first%20screen%20db.png) — Home screen with product browsing and category filter
+- [User product view](screenshots/User%20View%20db%20img/User%20product%20view.png) — Product detail page with stock, price, and add-to-cart controls
+- [User cart view](screenshots/User%20View%20db%20img/User%20cart%20view%20db.png) — Shopping cart with quantity controls, selection, and order summary
+- [Checkout details](screenshots/User%20View%20db%20img/user%20address%20details%20and%20payment%20method%20img.png) — Checkout flow with shipping and payment entry
+- [User orders status](screenshots/User%20View%20db%20img/User%20orders%20view%20status.png) — Order history with status tracking
+- [Shop categories](screenshots/User%20View%20db%20img/Shop%20Category.png) — Category browsing UI
 
-> See the `/screenshots` folder for UI screenshots and API testing results.
+### Admin Screenshots
+- [Admin login](screenshots/AdminDB%20img/admin%20login.png) — Admin authentication page
+- [Dashboard](screenshots/AdminDB%20img/Main%20dashboard.png) — Dashboard overview with sales, orders, and metrics
+- [Product management](screenshots/AdminDB%20img/Admin%20Product%20Db.png) — Product management interface
+- [Category management](screenshots/AdminDB%20img/Categories%20db.png) — Category management UI
+- [Orders status](screenshots/AdminDB%20img/Orders%20status%20db.png) — Orders table with status controls
+- [Order details](screenshots/AdminDB%20img/Order%20details.png) — Order details modal showing items and shipping info
+- [User management](screenshots/AdminDB%20img/User%20db.png) — User management screen
+- [Admin profile](screenshots/AdminDB%20img/Admin%20profile.png) — Admin profile or settings view
+- [Add product](screenshots/AdminDB%20img/ADD%20product%20.png) — Add product form
+
+### Swagger / API Screenshots
+- [Swagger UI](screenshots/swagger%20img/swager%20fs.png) — Swagger UI landing page
+- [GET product](screenshots/swagger%20img/Get%20product.png) — Swagger GET product endpoint
+- [GET categories](screenshots/swagger%20img/Get%20Categories.png) — Swagger GET categories endpoint
+- [GET cart](screenshots/swagger%20img/Get%20Cart.png) — Swagger GET cart endpoint
+- [GET order](screenshots/swagger%20img/Get%20Order.png) — Swagger GET order endpoint
+- [GET user](screenshots/swagger%20img/Get%20User.png) — Swagger GET user endpoint
+- [Register](screenshots/swagger%20img/Post%20Register%201.png) — Swagger register endpoint
+- [Login](screenshots/swagger%20img/post%20login1.png) — Swagger login endpoint
+- [Add cart](screenshots/swagger%20img/Post%20Cart.png) — Swagger add to cart endpoint
+- [Place order](screenshots/swagger%20img/Post%20Order.png) — Swagger place order endpoint
+- [Create product](screenshots/swagger%20img/post%20Product.png) — Swagger create product endpoint
+- [Update category](screenshots/swagger%20img/Put%20Categories.png) — Swagger update category endpoint
+- [Update user](screenshots/swagger%20img/Put%20user%20id.png) — Swagger update user endpoint
+
+> Click the links above to open screenshots directly from the `/screenshots` folder.
 
