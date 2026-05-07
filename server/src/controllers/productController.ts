@@ -29,14 +29,22 @@ export const getAllProducts = async (
   }
 };
 
-export const getProductById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getProductById = async (req: Request, res: Response): Promise<void> => {
   try {
+    // First try direct document lookup
     const doc = await db.collection('products').doc(req.params.id).get();
-    if (!doc.exists) { res.status(404).json({ message: 'Product not found' }); return; }
-    res.json({ id: doc.id, ...doc.data() });
+    if (doc.exists) {
+      res.json({ id: doc.id, ...doc.data() });
+      return;
+    }
+    // If not found, search by id field (UUID stored in document)
+    const snapshot = await db.collection('products').where('id', '==', req.params.id).limit(1).get();
+    if (snapshot.empty) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
+    const found = snapshot.docs[0];
+    res.json({ ...found.data(), id: found.id });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
