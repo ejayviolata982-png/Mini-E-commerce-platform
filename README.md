@@ -1,4 +1,4 @@
-# 🛍️ ShopEase — Mini E-Commerce Platform
+﻿# 🛍️ ShopEase — Mini E-Commerce Platform
 
 A full-stack e-commerce web application built with Angular, Node.js, Express, TypeScript, and Firebase Firestore.
 
