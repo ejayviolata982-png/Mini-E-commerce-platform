@@ -125,13 +125,21 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart() {
     this.adding = true;
+    const timeout = setTimeout(() => {
+      this.adding = false;
+      this.toast = '❌ Request timed out. Try again.';
+      setTimeout(() => this.toast = '', 2500);
+    }, 10000);
+
     this.cartService.addToCart({ productId: this.product.id, quantity: this.qty }).subscribe({
       next: () => {
+        clearTimeout(timeout);
         this.toast = '✅ Added to cart!';
         this.adding = false;
         setTimeout(() => this.toast = '', 2500);
       },
       error: (err: any) => {
+        clearTimeout(timeout);
         this.toast = err?.status === 401 ? '🔒 Please login again' : '❌ Failed to add to cart';
         this.adding = false;
       }
