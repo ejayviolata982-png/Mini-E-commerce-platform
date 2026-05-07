@@ -29,6 +29,14 @@ export const addToCart = async (req: AuthRequest, res: Response): Promise<void> 
     }
     const product = productDoc.data() as any;
 
+    // Check stock availability
+    if (product.stock <= 0) {
+      res.status(400).json({ message: 'Product is out of stock' }); return;
+    }
+    if (Number(quantity) > product.stock) {
+      res.status(400).json({ message: `Only ${product.stock} items available` }); return;
+    }
+
     const cartRef = db.collection('carts').doc(uid);
     const cartDoc = await cartRef.get();
     let items: any[] = cartDoc.exists ? cartDoc.data()?.items || [] : [];

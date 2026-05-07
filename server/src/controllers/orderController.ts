@@ -43,9 +43,9 @@ export const createOrder = async (
       const productDoc = await productRef.get();
       if (productDoc.exists) {
         const currentStock = productDoc.data()?.stock || 0;
-        const newStock = currentStock - item.quantity;
+        const newStock = Math.max(0, currentStock - item.quantity);
         let status = 'available';
-        if (newStock <= 0) status = 'out_of_stock';
+        if (newStock === 0) status = 'out_of_stock';
         else if (newStock <= 10) status = 'low_stock';
         await productRef.update({ stock: newStock, status });
       }
@@ -232,6 +232,18 @@ export const handleCancelRequest = async (
     if (!orderDoc.exists) { res.status(404).json({ message: 'Order not found' }); return; }
 
     if (action === 'approve') {
+      const order = orderDoc.data() as any;
+      // Restore stock for cancelled order
+      for (const item of (order.items || [])) {
+        const productRef = db.collection('products').doc(item.productId);
+        const productDoc = await productRef.get();
+        if (productDoc.exists) {
+          const currentStock = productDoc.data()?.stock || 0;
+          const newStock = currentStock + item.quantity;
+          const status = newStock <= 10 ? 'low_stock' : 'available';
+          await productRef.update({ stock: newStock, status });
+        }
+      }
       await db.collection('orders').doc(id).update({
         status: 'cancelled',
         cancelRequest: { status: 'approved', resolvedAt: new Date().toISOString() },
