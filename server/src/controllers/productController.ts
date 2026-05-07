@@ -11,7 +11,7 @@ export const getAllProducts = async (
     let query: any = db.collection('products');
     if (category) query = query.where('categoryName', '==', category);
     if (status) query = query.where('status', '==', status);
-    query = query.orderBy('createdAt', 'desc');
+    if (!category && !status) query = query.orderBy('createdAt', 'desc');
     const snapshot = await query.get();
     let products = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
     if (search) {
