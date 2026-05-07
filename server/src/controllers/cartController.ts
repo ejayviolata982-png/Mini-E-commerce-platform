@@ -22,10 +22,12 @@ export const addToCart = async (req: AuthRequest, res: Response): Promise<void> 
   }
 
   try {
-    // Auto-lookup product details from Firestore
-    const productDoc = await db.collection('products').doc(productId).get();
+    // Try direct lookup first, then search by uuid field
+    let productDoc = await db.collection('products').doc(productId).get();
     if (!productDoc.exists) {
-      res.status(404).json({ message: 'Product not found' }); return;
+      const snap = await db.collection('products').where('id', '==', productId).limit(1).get();
+      if (snap.empty) { res.status(404).json({ message: 'Product not found' }); return; }
+      productDoc = snap.docs[0] as any;
     }
     const product = productDoc.data() as any;
 
