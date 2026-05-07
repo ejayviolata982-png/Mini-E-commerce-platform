@@ -182,8 +182,8 @@ Home page category section with clickable pill buttons for filtering products.
 
 ### 🔐 Admin Panel
 
-#### Login
-![Login](screenshots/admin_login.png)
+
+(Login)(screenshots/admin_login.png)
 Admin authentication and login page.
 
 #### Dashboard
