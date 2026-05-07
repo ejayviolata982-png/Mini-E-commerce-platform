@@ -202,7 +202,7 @@ import { OrderService } from '../../../services/order.service';
               </div>
               <div class="flex justify-between text-sm text-gray-600">
                 <span>Subtotal</span>
-                <span>₱{{ viewingOrder.subtotal | number:'1.2-2' }}</span>
+                <span>₱{{ (viewingOrder.subtotal || viewingOrder.totalAmount || viewingOrder.total || 0) | number:'1.2-2' }}</span>
               </div>
               <div *ngIf="viewingOrder.shippingFee" class="flex justify-between text-sm text-gray-600">
                 <span>Shipping Fee</span>
@@ -210,7 +210,7 @@ import { OrderService } from '../../../services/order.service';
               </div>
               <div class="border-t border-gray-200 pt-2 flex justify-between font-bold text-gray-900">
                 <span>Total</span>
-                <span class="text-orange-600">₱{{ viewingOrder.total | number:'1.2-2' }}</span>
+                <span class="text-orange-600">₱{{ (viewingOrder.total || viewingOrder.totalAmount || 0) | number:'1.2-2' }}</span>
               </div>
             </div>
 

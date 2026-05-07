@@ -62,9 +62,15 @@ import { OrderService } from '../../services/order.service';
               <span class="font-medium">₱{{ (item.price * item.quantity) | number:'1.2-2' }}</span>
             </div>
           </div>
-          <div class="border-t border-gray-100 mt-4 pt-3 flex justify-between">
-            <span class="text-sm text-gray-500">{{ order.paymentMethod?.toUpperCase() }}</span>
-            <span class="font-bold text-gray-900">₱{{ order.total | number:'1.2-2' }}</span>
+          <div class="border-t border-gray-100 mt-4 pt-3">
+            <div class="flex justify-between text-sm text-gray-500 mb-1">
+              <span>Payment Method</span>
+              <span class="font-medium uppercase">{{ order.paymentMethod || 'N/A' }}</span>
+            </div>
+            <div class="flex justify-between font-bold text-gray-900">
+              <span>Total</span>
+              <span class="text-orange-600">₱{{ (order.total || order.totalAmount || 0) | number:'1.2-2' }}</span>
+            </div>
           </div>
         </div>
       </div>

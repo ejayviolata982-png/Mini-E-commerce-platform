@@ -265,3 +265,13 @@ app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
   console.log(`🔥 Firebase connected!`);
 });
+
+// Keep-alive ping for Render.com free tier
+const https = require('https');
+setInterval(() => {
+  https.get('https://shopease-server-lqqa.onrender.com/', (res: any) => {
+    console.log('🏓 Keep-alive ping sent, status:', res.statusCode);
+  }).on('error', () => {
+    console.log('⚠️ Keep-alive ping failed');
+  });
+}, 14 * 60 * 1000);
