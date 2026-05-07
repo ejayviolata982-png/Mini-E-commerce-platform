@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
           <div>
             <div class="flex items-center gap-2 mb-3">
               <span class="text-2xl">🛍️</span>
-              <span class="text-xl font-bold text-white">ShopEase</span>
+              <span class="text-xl font-bold text-white">Discart</span>
             </div>
             <p class="text-gray-400 text-sm leading-relaxed">
               Your one-stop shop for quality products at great prices.
@@ -31,16 +31,16 @@ import { RouterModule } from '@angular/router';
           <div>
             <h3 class="text-white font-semibold text-sm mb-3 uppercase tracking-wide">Contact</h3>
             <ul class="space-y-2 text-sm text-gray-400">
-              <li class="flex items-center gap-2"><span>📧</span> shopease&#64;gmail.com</li>
-              <li class="flex items-center gap-2"><span>📞</span> +63 912 345 6789</li>
-              <li class="flex items-center gap-2"><span>📍</span> Cebu City, Philippines</li>
+              <li class="flex items-center gap-2"><span>📧</span> ejviolata@gmail.com</li>
+              <li class="flex items-center gap-2"><span>📞</span> +63 9687456364</li>
+              <li class="flex items-center gap-2"><span>📍</span> Barotac, Nuevo</li>
             </ul>
           </div>
         </div>
       </div>
       <div class="border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p class="text-gray-500 text-xs sm:text-sm">© 2026 ShopEase. All rights reserved.</p>
+          <p class="text-gray-500 text-xs sm:text-sm">© 2026 Discart. All rights reserved.</p>
           <p class="text-gray-600 text-xs">Built with Angular + Firebase + Node.js</p>
         </div>
       </div>
