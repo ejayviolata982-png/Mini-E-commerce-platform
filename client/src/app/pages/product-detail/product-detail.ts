@@ -126,8 +126,15 @@ export class ProductDetailComponent implements OnInit {
   addToCart() {
     this.adding = true;
     this.cartService.addToCart({ productId: this.product.id, quantity: this.qty }).subscribe({
-      next: () => { this.toast = '✅ Added to cart!'; this.adding = false; setTimeout(() => this.toast = '', 2500); },
-      error: () => { this.toast = '❌ Failed'; this.adding = false; }
+      next: () => {
+        this.toast = '✅ Added to cart!';
+        this.adding = false;
+        setTimeout(() => this.toast = '', 2500);
+      },
+      error: (err: any) => {
+        this.toast = err?.status === 401 ? '🔒 Please login again' : '❌ Failed to add to cart';
+        this.adding = false;
+      }
     });
   }
 }
