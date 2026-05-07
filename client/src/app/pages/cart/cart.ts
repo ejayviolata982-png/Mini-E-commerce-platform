@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { CartService } from '../../services/cart.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-cart',
@@ -66,8 +68,8 @@ import { CartService } from '../../services/cart.service';
                   <button (click)="decrement(item)"
                           class="w-7 h-7 border border-gray-300 rounded-lg hover:bg-gray-100 font-bold flex items-center justify-center transition active:scale-95 text-sm">−</button>
                   <span class="text-sm font-semibold w-6 text-center">{{ item.quantity }}</span>
-                  <button (click)="increment(item)"
-                          class="w-7 h-7 border border-gray-300 rounded-lg hover:bg-gray-100 font-bold flex items-center justify-center transition active:scale-95 text-sm">+</button>
+                  <button (click)="increment(item)" [disabled]="item.quantity >= (item.stock || 99)"
+                          class="w-7 h-7 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center justify-center transition active:scale-95 text-sm">+</button>
                   <button (click)="removeItem(item)"
                           class="ml-2 text-red-400 hover:text-red-600 text-xs font-medium transition">Remove</button>
                 </div>
@@ -125,6 +127,9 @@ import { CartService } from '../../services/cart.service';
           </a>
         </div>
       </div>
+      <div *ngIf="toast" class="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium z-50">
+        {{ toast }}
+      </div>
     </div>
   `
 })
@@ -132,9 +137,11 @@ export class CartComponent implements OnInit {
   cart: any = { items: [], total: 0 };
   loading = true;
   selectedIds = new Set<string>();
+  toast = '';
 
   constructor(
     private cartService: CartService,
+    private productService: ProductService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private zone: NgZone
@@ -142,10 +149,10 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.cartService.getCart().subscribe({
-      next: (c) => {
+      next: async (c) => {
         this.cart = c;
-        // Select all by default
         this.selectedIds = new Set(c?.items?.map((i: any) => i.productId) || []);
+        await this.enrichCartStocks();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -189,6 +196,11 @@ export class CartComponent implements OnInit {
   }
 
   increment(item: any) {
+    const maxStock = item.stock || 99;
+    if (item.quantity >= maxStock) {
+      this.showToast(`⚠️ Only ${maxStock} available in stock`);
+      return;
+    }
     item.quantity += 1;
     this.recalcTotal();
     this.cdr.detectChanges();
@@ -222,6 +234,26 @@ export class CartComponent implements OnInit {
 
   recalcTotal() {
     this.cart.total = this.cart.items.reduce((sum: number, i: any) => sum + i.price * i.quantity, 0);
+  }
+
+  private async enrichCartStocks() {
+    if (!this.cart?.items?.length) return;
+    await Promise.all(this.cart.items.map(async (item: any) => {
+      try {
+        const product = await lastValueFrom(this.productService.getById(item.productId));
+        item.stock = product.stock ?? item.stock ?? 99;
+      } catch {
+        item.stock = item.stock ?? 99;
+      }
+    }));
+  }
+
+  showToast(msg: string) {
+    this.zone.run(() => {
+      this.toast = msg;
+      this.cdr.detectChanges();
+      setTimeout(() => { this.toast = ''; this.cdr.detectChanges(); }, 2500);
+    });
   }
 
   checkout() {
