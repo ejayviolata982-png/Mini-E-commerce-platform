@@ -18,15 +18,25 @@ import { AuthService } from '../../services/auth.service';
         <p class="text-gray-500 text-sm mt-1">{{ total }} products available</p>
       </div>
 
-      <!-- Filters -->
-      <div class="flex flex-col sm:flex-row gap-3 mb-8">
+      <!-- Search -->
+      <div class="mb-4">
         <input [(ngModel)]="search" (ngModelChange)="onSearch()" type="text" placeholder="Search products..."
-               class="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"/>
-        <select [(ngModel)]="selectedCategory" (ngModelChange)="loadProducts()" 
-                class="px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white">
-          <option value="">All Categories</option>
-          <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
-        </select>
+               class="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"/>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">
+        <button (click)="selectCategory('')"
+                [class]="selectedCategory === '' ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300'"
+                class="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition whitespace-nowrap">
+          🛍️ All
+        </button>
+        <button *ngFor="let c of categories"
+                (click)="selectCategory(c.id)"
+                [class]="selectedCategory === c.id ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300'"
+                class="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition whitespace-nowrap">
+          {{ c.icon || '📦' }} {{ c.name }}
+        </button>
       </div>
 
       <!-- Loading -->
@@ -136,7 +146,10 @@ export class ProductsComponent implements OnInit {
     this.searchTimeout = setTimeout(() => this.loadProducts(), 400);
   }
 
-  addToCart(product: any) {
+  selectCategory(categoryId: string) {
+    this.selectedCategory = categoryId;
+    this.loadProducts();
+  }
     if (this.addingIds.has(product.id)) return;
     this.addingIds.add(product.id);
     this.showToast('✅ Added to cart!');
