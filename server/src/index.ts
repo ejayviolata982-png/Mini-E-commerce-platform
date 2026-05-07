@@ -24,10 +24,13 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'https://mini-e-commerce-platform-ochre.vercel.app',
-    'http://localhost:4200'
-  ],
+  origin: (origin, callback) => {
+    if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(morgan('dev'));
