@@ -150,6 +150,8 @@ export class ProductsComponent implements OnInit {
     this.selectedCategory = categoryId;
     this.loadProducts();
   }
+
+  addToCart(product: any) {
     if (this.addingIds.has(product.id)) return;
     this.addingIds.add(product.id);
     this.showToast('✅ Added to cart!');
