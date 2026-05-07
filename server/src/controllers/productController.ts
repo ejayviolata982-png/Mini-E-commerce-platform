@@ -9,7 +9,7 @@ export const getAllProducts = async (
   const { search, category, status, page = 1, limit = 12 } = req.query;
   try {
     let query: any = db.collection('products');
-    if (category) query = query.where('categoryId', '==', category);
+    if (category) query = query.where('categoryName', '==', category);
     if (status) query = query.where('status', '==', status);
     query = query.orderBy('createdAt', 'desc');
     const snapshot = await query.get();

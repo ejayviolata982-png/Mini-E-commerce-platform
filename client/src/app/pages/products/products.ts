@@ -32,8 +32,8 @@ import { AuthService } from '../../services/auth.service';
           🛍️ All
         </button>
         <button *ngFor="let c of categories"
-                (click)="selectCategory(c.id)"
-                [class]="selectedCategory === c.id ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300'"
+                (click)="selectCategory(c.name)"
+                [class]="selectedCategory === c.name ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300'"
                 class="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition whitespace-nowrap">
           {{ c.icon || '📦' }} {{ c.name }}
         </button>
