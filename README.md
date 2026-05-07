@@ -152,41 +152,36 @@ npm run dev
 
 ## 📸 Screenshots
 
-Screenshots are stored in the `/screenshots` folder, organized by UI section and API documentation.
+### 👤 User View
+- [Home Page](screenshots/User_first_screen_db.png) — Landing page with hero banner, category pills, and featured products grid
+- [All Products](screenshots/User_product_view.png) — Product listing with search bar, category filter, stock count, and Add to Cart button
+- [Shopping Cart](screenshots/User_cart_view_db.png) — Cart with item selection, quantity controls, order summary, and total price
+- [Checkout](screenshots/user_address_details_and_payment_method_img.png) — Shipping address form with payment method selection (COD, GCash, Bank Transfer)
+- [My Orders](screenshots/User_orders_view_status.png) — Order history showing order number, items, payment method, and status
+- [Shop by Category](screenshots/Shop_Category.png) — Home page category section with clickable pill buttons for filtering products
 
-### User View Screenshots
-- [User first screen](screenshots/User%20View%20db%20img/User%20first%20screen%20db.png) — Home screen with product browsing and category filter
-- [User product view](screenshots/User%20View%20db%20img/User%20product%20view.png) — Product detail page with stock, price, and add-to-cart controls
-- [User cart view](screenshots/User%20View%20db%20img/User%20cart%20view%20db.png) — Shopping cart with quantity controls, selection, and order summary
-- [Checkout details](screenshots/User%20View%20db%20img/user%20address%20details%20and%20payment%20method%20img.png) — Checkout flow with shipping and payment entry
-- [User orders status](screenshots/User%20View%20db%20img/User%20orders%20view%20status.png) — Order history with status tracking
-- [Shop categories](screenshots/User%20View%20db%20img/Shop%20Category.png) — Category browsing UI
+### 🔐 Admin Panel
+- [Login](screenshots/admin_login.png) — Admin authentication and login page
+- [Dashboard](screenshots/Main_dashboard.png) — Overview of total revenue, orders, users, active products, and order status breakdown
+- [Manage Products](screenshots/Admin_Product_Db.png) — Product list with category, price, stock, and edit/delete controls
+- [Add Product](screenshots/ADD_product_.png) — Modal form for adding a new product with name, price, stock, category, description, and image URL
+- [Manage Categories](screenshots/Categories_db.png) — Category list with expandable product view showing price, stock, and availability status
+- [Manage Orders](screenshots/Orders_status_db.png) — Orders table with customer info, shipping address, total, status, and cancel request controls
+- [Order Details](screenshots/Order_details.png) — Modal showing customer info, shipping address, items ordered, and payment method
+- [Manage Users](screenshots/User_db.png) — List of all registered users with name, email, role, and join date
+- [Admin Profile](screenshots/Admin_profile.png) — Admin profile page with editable name, phone, gender, age, and address
 
-### Admin Screenshots
-- [Admin login](screenshots/AdminDB%20img/admin%20login.png) — Admin authentication page
-- [Dashboard](screenshots/AdminDB%20img/Main%20dashboard.png) — Dashboard overview with sales, orders, and metrics
-- [Product management](screenshots/AdminDB%20img/Admin%20Product%20Db.png) — Product management interface
-- [Category management](screenshots/AdminDB%20img/Categories%20db.png) — Category management UI
-- [Orders status](screenshots/AdminDB%20img/Orders%20status%20db.png) — Orders table with status controls
-- [Order details](screenshots/AdminDB%20img/Order%20details.png) — Order details modal showing items and shipping info
-- [User management](screenshots/AdminDB%20img/User%20db.png) — User management screen
-- [Admin profile](screenshots/AdminDB%20img/Admin%20profile.png) — Admin profile or settings view
-- [Add product](screenshots/AdminDB%20img/ADD%20product%20.png) — Add product form
-
-### Swagger / API Screenshots
-- [Swagger UI](screenshots/swagger%20img/swager%20fs.png) — Swagger UI landing page
-- [GET product](screenshots/swagger%20img/Get%20product.png) — Swagger GET product endpoint
-- [GET categories](screenshots/swagger%20img/Get%20Categories.png) — Swagger GET categories endpoint
-- [GET cart](screenshots/swagger%20img/Get%20Cart.png) — Swagger GET cart endpoint
-- [GET order](screenshots/swagger%20img/Get%20Order.png) — Swagger GET order endpoint
-- [GET user](screenshots/swagger%20img/Get%20User.png) — Swagger GET user endpoint
-- [Register](screenshots/swagger%20img/Post%20Register%201.png) — Swagger register endpoint
-- [Login](screenshots/swagger%20img/post%20login1.png) — Swagger login endpoint
-- [Add cart](screenshots/swagger%20img/Post%20Cart.png) — Swagger add to cart endpoint
-- [Place order](screenshots/swagger%20img/Post%20Order.png) — Swagger place order endpoint
-- [Create product](screenshots/swagger%20img/post%20Product.png) — Swagger create product endpoint
-- [Update category](screenshots/swagger%20img/Put%20Categories.png) — Swagger update category endpoint
-- [Update user](screenshots/swagger%20img/Put%20user%20id.png) — Swagger update user endpoint
-
-> Click the links above to open screenshots directly from the `/screenshots` folder.
-
+### 📡 API Documentation (Swagger)
+- [Swagger UI](screenshots/swager_fs.png) — Interactive API docs listing all endpoints grouped by Auth, Products, Cart, Orders, and Users
+- [GET /products](screenshots/Get_product.png) — Fetch all products with search, category, page, and limit query parameters
+- [GET /categories](screenshots/Get_Categories.png) — Retrieve all product categories with full CRUD endpoints listed
+- [GET /cart](screenshots/Get_Cart.png) — Get the current authenticated user's cart with all cart endpoints listed
+- [GET /orders](screenshots/Get_Order.png) — Fetch all orders (Admin) with status and search filter parameters
+- [GET /users](screenshots/Get_User.png) — Retrieve all registered users (Admin only) with user endpoints listed
+- [POST /auth/register](screenshots/Post_Register_1.png) — Register a new user with name, email, password, and phone fields
+- [POST /auth/login](screenshots/post_login1.png) — Authenticate a user with email and password, returns JWT token
+- [POST /cart](screenshots/Post_Cart.png) — Add a product item to the user's cart with request body schema
+- [POST /orders](screenshots/Post_Order.png) — Place a new order with items, shipping address, payment method, and total amount
+- [POST /products](screenshots/post_Product.png) — Create a new product (Admin only) with full product schema
+- [PUT /categories/:id](screenshots/Put_Categories.png) — Update an existing category with name, icon, and description fields
+- [PUT /users/:id](screenshots/Put_user_id.png) — Update a user's profile with name, phone, and address fields
