@@ -18,10 +18,25 @@ import { AuthService } from '../../services/auth.service';
 
       <div *ngIf="loading" class="animate-pulse grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="h-80 bg-gray-200 rounded-2xl"></div>
-        <div class="space-y-4"><div class="h-8 bg-gray-200 rounded w-3/4"></div><div class="h-6 bg-gray-200 rounded w-1/4"></div></div>
+        <div class="space-y-4">
+          <div class="h-8 bg-gray-200 rounded w-3/4"></div>
+          <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div class="h-4 bg-gray-200 rounded w-full"></div>
+          <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+        </div>
       </div>
 
-      <div *ngIf="!loading && product" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div *ngIf="error" class="text-center py-16">
+        <span class="text-5xl">⚠️</span>
+        <p class="text-gray-700 font-semibold mt-4">Failed to load product</p>
+        <p class="text-gray-400 text-sm mt-1">The server may be waking up. Please try again.</p>
+        <button (click)="retry()" class="mt-4 px-6 py-2 bg-orange-500 text-white rounded-xl font-medium hover:bg-orange-600 transition">
+          🔄 Retry
+        </button>
+        <a routerLink="/products" class="block text-orange-500 font-medium hover:underline mt-3">← Back to Products</a>
+      </div>
+
+      <div *ngIf="!loading && !error && product" class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
           <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" class="w-full h-80 object-cover"/>
           <div *ngIf="!product.imageUrl" class="w-full h-80 flex items-center justify-center text-6xl bg-gray-50">🛍️</div>
@@ -62,7 +77,7 @@ import { AuthService } from '../../services/auth.service';
         </div>
       </div>
 
-      <div *ngIf="!loading && !product" class="text-center py-16">
+      <div *ngIf="!loading && !error && !product" class="text-center py-16">
         <span class="text-5xl">😕</span>
         <p class="text-gray-500 mt-4">Product not found</p>
         <a routerLink="/products" class="text-orange-500 font-medium hover:underline mt-2 inline-block">Browse Products</a>
@@ -73,10 +88,12 @@ import { AuthService } from '../../services/auth.service';
 export class ProductDetailComponent implements OnInit {
   product: any = null;
   loading = true;
+  error = false;
   qty = 1;
   adding = false;
   toast = '';
   isLoggedIn = false;
+  private productId = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -89,11 +106,21 @@ export class ProductDetailComponent implements OnInit {
     this.auth.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
     });
-    const id = this.route.snapshot.paramMap.get('id')!;
-    this.productService.getById(id).subscribe({
+    this.productId = this.route.snapshot.paramMap.get('id')!;
+    this.loadProduct();
+  }
+
+  loadProduct() {
+    this.loading = true;
+    this.error = false;
+    this.productService.getById(this.productId).subscribe({
       next: (p) => { this.product = p; this.loading = false; },
-      error: () => this.loading = false
+      error: () => { this.loading = false; this.error = true; }
     });
+  }
+
+  retry() {
+    this.loadProduct();
   }
 
   addToCart() {
